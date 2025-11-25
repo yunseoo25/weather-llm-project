@@ -1,0 +1,48 @@
+body {
+margin: 0;
+padding: 0;
+font-family: Arial, sans-serif;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+background: #f2f4f7;
+}
+
+
+.container {
+width: 100%;
+max-width: 420px;
+background: white;
+padding: 20px;
+border-radius: 16px;
+box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+text-align: center;
+}
+
+
+input {
+width: 70%;
+padding: 10px;
+border-radius: 8px;
+border: 1px solid #bbb;
+}
+
+
+button {
+padding: 10px 16px;
+margin-left: 5px;
+border: none;
+border-radius: 8px;
+background-color: #4a90e2;
+color: white;
+cursor: pointer;
+}
+
+
+.weather-box {
+margin-top: 20px;
+padding: 20px;
+background: #eef3f7;
+border-radius: 12px;
+}
