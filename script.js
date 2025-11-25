@@ -5,7 +5,7 @@ const response = await fetch(url);
 const data = await response.json();
 
 
-document.getElementById("temp").textContent = `Temp: ${data.main.temp}/${fahrenheitToCelsius(data.main.temp).toFixed(1)}`;
+document.getElementById("temp").textContent = `Temp: ${data.main.temp}/${kelvinToCelsius(data.main.temp).toFixed(1)}`;
 document.getElementById("description").textContent = `Weather: ${data.weather[0].description}`;
 } catch (error) {
 handleError(error);
@@ -17,8 +17,8 @@ function handleError(error) {
 console.error("Error occurred:", error);
 }
 
-function fahrenheitToCelsius(f){
-    return (f-32) * 5/9;
+function kelvinToCelsius(K){
+    return (K-273.15) ;
 }
 
 
