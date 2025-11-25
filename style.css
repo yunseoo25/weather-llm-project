@@ -9,12 +9,15 @@ align-items: center;
 min-height: 100vh;
 background: #f2f4f7;
 background-image: url('cloud.jpg');
+background-repeat:no-repeat;
+background-size:cover;
 }
 
 
 .container {
+    
 width: 100%;
-max-width: 420px;
+max-width: 480px;
 background: white;
 padding: 20px;
 border-radius: 16px;
@@ -47,4 +50,27 @@ margin-top: 20px;
 padding: 20px;
 background: #eef3f7;
 border-radius: 12px;
+margin-bottom:20px;
+}
+
+.forecast-container {
+  display:flex ;
+  
+  margin-top: 20px; /* 현재 날씨 영역과 간격 */
+  padding:15px;
+  width:100%;
+  flex-wrap:wrap;
+  gap:10px;
+
+}
+
+.forecast-card {
+  background: rgba(255,255,255,0.85);
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  margin: 5px;
+  
+  font-size:0.9rem;
+
 }
