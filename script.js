@@ -5,7 +5,8 @@ const response = await fetch(url);
 const data = await response.json();
 
 
-document.getElementById("temp").textContent = `Temp: ${data.main.temp}/${kelvinToCelsius(data.main.temp).toFixed(1)}`;
+document.getElementById("temp").textContent = `Temp: ${kelvinToCelsius(data.main.temp).toFixed(1)}`;
+// 켈빈을 섭씨로 바꾸는 로직 
 document.getElementById("description").textContent = `Weather: ${data.weather[0].description}`;
 } catch (error) {
 handleError(error);
