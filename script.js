@@ -102,3 +102,64 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+
+//현재위치날씨가져오기
+
+const geoBtn   = document.getElementById("geoBtn");
+const apikey="f777e360e70831b017b92916f3319d13";
+
+geoBtn.addEventListener("click", ()=>{
+    if (!navigator.geolocation){
+        alert("이 브라우저에서는 위치 정보를 지원하지 않아요");
+        return ;
+    }
+    navigator.geolocation.getCurrentPosition(success, error);
+
+});
+
+function success(position){
+    const lat=position.coords.latitude;
+    const lon=position.coords.longitude;
+     console.log("현재 위치:", lat, lon);
+  getWeatherByCoords(lat, lon);
+}
+
+function error(err){
+    console.error(err);
+    alert("위치정보를 가져올 수 없어요");
+}
+
+async function getWeatherByCoords(lat, lon) {
+  const url =
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}` +
+    `&appid=${apikey}&units=metric&lang=kr`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("날씨 정보를 가져올 수 없습니다.");
+
+    const data = await res.json();
+
+    // ⬇ 여기에서 화면에 표시 (temp, description 등)는
+    // getWeather() 안에서 하던 코드랑 완전히 똑같이 쓰면 돼
+    const temp = Math.round(data.main.temp);
+    const desc = data.weather[0].description;
+    const name = `${data.name}, ${data.sys.country}`;
+
+    
+    const tempElem = document.getElementById("temp");
+    const descElem = document.getElementById("description");
+
+    tempElem.textContent = `Temp: ${data.main.temp.toFixed(1)}°C / ${celsiusToFahrenheit(data.main.temp).toFixed(1)}°F`;
+    descElem.textContent = `Weather: ${data.weather[0].description}`;
+
+
+    
+    // 도시 입력창에도 현재 도시 이름 넣어주면 편함
+    cityInput.value = name;
+  } catch (err) {
+    console.error(err);
+    alert("현재 위치의 날씨 정보를 가져오는 중 오류가 발생했습니다.");
+  }
+}

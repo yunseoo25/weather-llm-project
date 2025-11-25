@@ -1,4 +1,10 @@
 /* 날씨웹사이트작성 */
+@media(max-width:480px){
+    body{
+        padding:10px;
+    }
+}
+
 body {
 margin: 0;
 padding: 0;
@@ -73,4 +79,14 @@ margin-bottom:20px;
   
   font-size:0.9rem;
 
+}
+
+#geoBtn{
+    padding:10px 16px;
+    margin-top:8px;
+    border:none;
+    border-radius:8px;
+    background-color:#2ecc71;
+    color:white;
+    cursor:pointer;
 }
