@@ -22,3 +22,4 @@ document.getElementById("searchBtn").addEventListener("click", () => {
 const city = document.getElementById("cityInput").value;
 if (city) getWeather(city);
 });
+// 날씨웹사이트
