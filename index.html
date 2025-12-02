@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Weather App</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<!-- 전체를 좌/우로 나누는 wrapper -->
+<div class="wrapper">
+
+    <!-- 기존 컨테이너 -->
+    <div class="container">
+        <h1>Weather App</h1>
+        <input id="cityInput" type="text" placeholder="Enter city" />
+        <button id="searchBtn">Search</button>
+        <button id="geoBtn">현재위치</button>
+
+        <div class="weather-box">
+            <p id="temp"></p>
+            <p id="description"></p>
+            <div class="forecast-container"></div>
+        </div>
+    </div>
+
+    <!-- 새로 추가한 옆 컨테이너 -->
+    <div class="side-box">
+        <h2>오늘의 옷차림 추천</h2>
+        <p id="clothes"></p>
+
+        <h2>오늘의 데이트 추천</h2>
+        <p id="dateIdea"></p>
+
+        <h2>현재 시간</h2>
+        <p id="currentTime"></p>
+
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
