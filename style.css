@@ -149,3 +149,48 @@ margin-bottom:20px;
     box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
 }
 
+
+/* 🌟 모바일 완전 대응 */
+@media (max-width: 480px) {
+
+    body {
+        padding: 10px;
+        flex-direction: column; /* 만약 body 레이아웃 깨질 시 */
+        align-items: stretch;
+    }
+
+    .container {
+        width: 100%;   /* 🔥 모바일에서 가득 차도록 */
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .wrapper {
+        flex-direction: column;  /* 🔥 가로 배치 → 세로 배치 */
+        gap: 15px;
+    }
+
+    .side-box {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .weather-box {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .forecast-container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .forecast-card {
+        width: 45%;  /* 2개씩 배치되도록 */
+        margin: 5px;
+    }
+}
+
+
