@@ -198,6 +198,27 @@ async function getWeatherByCoords(lat, lon) {
     tempElem.textContent = `Temp: ${data.main.temp.toFixed(1)}°C / ${celsiusToFahrenheit(data.main.temp).toFixed(1)}°F`;
     descElem.textContent = `Weather: ${data.weather[0].description}`;
 
+
+    const forecastContainer = document.querySelector(".forecast-container");
+        forecastContainer.innerHTML = "";
+
+        forecast3Days.forEach(day => {
+            const card = document.createElement("div");
+            card.className = "forecast-card";
+            card.innerHTML = `
+                <p class="date">${day.date}</p>
+                <img src="http://openweathermap.org/img/wn/${day.icon}.png" alt="${day.desc}">
+                <p class="temp">${day.tempMax.toFixed(1)}°C / ${day.tempMin.toFixed(1)}°C</p>
+                <p class="desc">${day.desc}</p>
+            `;
+
+            const avgTemp = (day.tempMax + day.tempMin) / 2;
+            card.style.background = getCardColorByTemp(avgTemp);
+            card.style.color = "#333"; // 글자색 (필요하면)
+
+            forecastContainer.appendChild(card); 
+        });
+
     //기온별 옷차림 추천 적용
     const celsius = data.main.temp;
     const clothesText = getClothesRecommendation(celsius);
