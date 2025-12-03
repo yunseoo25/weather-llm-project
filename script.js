@@ -69,6 +69,36 @@ async function getWeather(city) {
                 <p class="temp">${day.tempMax.toFixed(1)}°C / ${day.tempMin.toFixed(1)}°C</p>
                 <p class="desc">${day.desc}</p>
             `;
+
+            const avgTemp = (day.tempMax + day.tempMin) / 2;
+            card.style.background = getCardColorByTemp(avgTemp);
+            card.style.color = "#333"; // 글자색 (필요하면)
+
+            
+
+            // 🔥 25°C 이상이면 선샤인 애니메이션 추가
+            if (avgTemp >= 25) {
+            const sun = document.createElement("div");
+            sun.classList.add("sunshine");
+            card.appendChild(sun);
+            }
+
+
+            // 추운 날 눈 내리는 효과 (평균기온 5°C 이하)
+            if (avgTemp <= 5) {
+            for (let i = 0; i < 6; i++) {
+                const snow = document.createElement("div");
+                snow.classList.add("snowflake");
+                snow.textContent = '❄';  // 눈송이 문자
+                snow.style.left = (Math.random() * 80 + 10) + "%"; // 랜덤 위치
+                snow.style.animationDelay = (Math.random() * 2) + "s";
+                snow.style.fontSize = (12 + Math.random() * 4) + "px";
+
+                card.appendChild(snow);
+                }
+            }
+
+
             forecastContainer.appendChild(card);
         });
 
@@ -241,6 +271,25 @@ function updateCurrentTime() {
 
     const formatted = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     document.getElementById("currentTime").textContent = formatted;
+}
+
+//기온에 따라 카드뉴스 색상 변경 
+function getCardColorByTemp(temp) {
+    if (temp <= 5) {
+        return "#0986c1dc";   // 추운 날 → 시원한 연파랑
+    } else if (temp > 5 && temp <= 10) {
+        return "#46c0f8ff";
+    } else if (temp > 10 && temp <= 15) {
+        return "#86e4ebff";
+    } else if (temp > 15 && temp <= 20) {
+        return "#4ef5d0ff";   // 선선한 날 → 청록
+    } else if (temp > 20 && temp <= 25) {
+        return "#f4f276ff";   // 따뜻
+    } else if (temp > 25 && temp <= 30) {
+        return "#f08d50ff";   // 더움 → 오렌지
+    } else {
+        return "#f26033ff";   // 매우 더움 → 진한 오렌지
+    }
 }
 
 // 1초마다 시간 업데이트
