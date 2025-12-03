@@ -24,37 +24,11 @@ async function getWeather(city) {
         tempElem.textContent = `Temp: ${data.main.temp.toFixed(1)}°C / ${celsiusToFahrenheit(data.main.temp).toFixed(1)}°F`;
         descElem.textContent = `Weather: ${data.weather[0].description}`;
 
-
+        await renderForecast(city, apiKey);
     
-            // 🔥 25°C 이상이면 선샤인 애니메이션 추가
-            if (avgTemp >= 25) {
-            const sun = document.createElement("div");
-            sun.classList.add("sunshine");
-            card.appendChild(sun);
-            }
-
-
-            // 추운 날 눈 내리는 효과 (평균기온 5°C 이하)
-            if (avgTemp <= 5) {
-            for (let i = 0; i < 6; i++) {
-                const snow = document.createElement("div");
-                snow.classList.add("snowflake");
-                snow.textContent = '❄';  // 눈송이 문자
-                snow.style.left = (Math.random() * 80 + 10) + "%"; // 랜덤 위치
-                snow.style.animationDelay = (Math.random() * 2) + "s";
-                snow.style.fontSize = (12 + Math.random() * 4) + "px";
-
-                card.appendChild(snow);
-                }
-            }
-
-
-            forecastContainer.appendChild(card);
-        
-
         // 화면에 온도 표시
-  tempElem.textContent =
-  `Temp: ${data.main.temp.toFixed(1)}°C / ${celsiusToFahrenheit(data.main.temp).toFixed(1)}°F`;
+         tempElem.textContent =
+        `Temp: ${data.main.temp.toFixed(1)}°C / ${celsiusToFahrenheit(data.main.temp).toFixed(1)}°F`;
 
       // 옷차림 추천 적용
       const clothesText = getClothesRecommendation(data.main.temp);
@@ -64,14 +38,10 @@ async function getWeather(city) {
       const dateIdea=getDateIdeaByTemperature(data.main.temp);
       document.getElementById("dateIdea").textContent=dateIdea;
 
-      await renderForecast(city, apiKey);
-
-
+    
     } catch (error) {
         handleError(error);
     }
-
-    
 };
 
 // --- 검색 버튼 이벤트 ---
