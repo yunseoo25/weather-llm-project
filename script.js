@@ -24,58 +24,8 @@ async function getWeather(city) {
         tempElem.textContent = `Temp: ${data.main.temp.toFixed(1)}°C / ${celsiusToFahrenheit(data.main.temp).toFixed(1)}°F`;
         descElem.textContent = `Weather: ${data.weather[0].description}`;
 
-        // --- 3일 단기예보 ---
-        const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
-        const forecastRes = await fetch(forecastUrl);
-        const forecastData = await forecastRes.json();
 
-        const dailyDataMap = {};
-        const today = new Date().getDate();
-
-        forecastData.list.forEach(item => {
-            const d = new Date(item.dt * 1000);
-            const day = d.getDate();
-            if(day === today) return; // 오늘 제외
-
-            const dateStr = `${d.getMonth()+1}/${day}`;
-
-            if(!dailyDataMap[dateStr]) {
-                dailyDataMap[dateStr] = {
-                    tempMax: item.main.temp_max,
-                    tempMin: item.main.temp_min,
-                    desc: item.weather[0].description,
-                    icon: item.weather[0].icon
-                };
-            } else {
-                dailyDataMap[dateStr].tempMax = Math.max(dailyDataMap[dateStr].tempMax, item.main.temp_max);
-                dailyDataMap[dateStr].tempMin = Math.min(dailyDataMap[dateStr].tempMin, item.main.temp_min);
-            }
-        });
-
-        const forecast3Days = Object.keys(dailyDataMap).slice(0,3).map(dateStr => {
-            return { date: dateStr, ...dailyDataMap[dateStr] };
-        });
-
-        // --- 카드 생성 ---
-        const forecastContainer = document.querySelector(".forecast-container");
-        forecastContainer.innerHTML = "";
-
-        forecast3Days.forEach(day => {
-            const card = document.createElement("div");
-            card.className = "forecast-card";
-            card.innerHTML = `
-                <p class="date">${day.date}</p>
-                <img src="http://openweathermap.org/img/wn/${day.icon}.png" alt="${day.desc}">
-                <p class="temp">${day.tempMax.toFixed(1)}°C / ${day.tempMin.toFixed(1)}°C</p>
-                <p class="desc">${day.desc}</p>
-            `;
-
-            const avgTemp = (day.tempMax + day.tempMin) / 2;
-            card.style.background = getCardColorByTemp(avgTemp);
-            card.style.color = "#333"; // 글자색 (필요하면)
-
-            
-
+    
             // 🔥 25°C 이상이면 선샤인 애니메이션 추가
             if (avgTemp >= 25) {
             const sun = document.createElement("div");
@@ -100,7 +50,7 @@ async function getWeather(city) {
 
 
             forecastContainer.appendChild(card);
-        });
+        
 
         // 화면에 온도 표시
   tempElem.textContent =
@@ -114,12 +64,15 @@ async function getWeather(city) {
       const dateIdea=getDateIdeaByTemperature(data.main.temp);
       document.getElementById("dateIdea").textContent=dateIdea;
 
+      await renderForecast(city, apiKey);
+
+
     } catch (error) {
         handleError(error);
     }
 
     
-}
+};
 
 // --- 검색 버튼 이벤트 ---
 // DOM이 다 준비된 후에 실행되도록
@@ -199,26 +152,6 @@ async function getWeatherByCoords(lat, lon) {
     descElem.textContent = `Weather: ${data.weather[0].description}`;
 
 
-    const forecastContainer = document.querySelector(".forecast-container");
-        forecastContainer.innerHTML = "";
-
-        forecast3Days.forEach(day => {
-            const card = document.createElement("div");
-            card.className = "forecast-card";
-            card.innerHTML = `
-                <p class="date">${day.date}</p>
-                <img src="http://openweathermap.org/img/wn/${day.icon}.png" alt="${day.desc}">
-                <p class="temp">${day.tempMax.toFixed(1)}°C / ${day.tempMin.toFixed(1)}°C</p>
-                <p class="desc">${day.desc}</p>
-            `;
-
-            const avgTemp = (day.tempMax + day.tempMin) / 2;
-            card.style.background = getCardColorByTemp(avgTemp);
-            card.style.color = "#333"; // 글자색 (필요하면)
-
-            forecastContainer.appendChild(card); 
-        });
-
     //기온별 옷차림 추천 적용
     const celsius = data.main.temp;
     const clothesText = getClothesRecommendation(celsius);
@@ -228,7 +161,7 @@ async function getWeatherByCoords(lat, lon) {
     const dateIdea=getDateIdeaByTemperature(data.main.temp);
     document.getElementById("dateIdea").textContent=dateIdea;
 
-
+    await renderForecast(data.name,apikey);
 
     
     // 도시 입력창에도 현재 도시 이름 넣어주면 편함
@@ -312,6 +245,85 @@ function getCardColorByTemp(temp) {
         return "#f26033ff";   // 매우 더움 → 진한 오렌지
     }
 }
+
+
+async function renderForecast(city, apiKey) {
+
+    const forecastUrl =
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+
+    const forecastRes = await fetch(forecastUrl);
+    const forecastData = await forecastRes.json();
+
+    const dailyDataMap = {};
+    const today = new Date().getDate();
+
+    forecastData.list.forEach(item => {
+        const d = new Date(item.dt * 1000);
+        const day = d.getDate();
+        if (day === today) return;
+
+        const dateStr = `${d.getMonth() + 1}/${day}`;
+
+        if (!dailyDataMap[dateStr]) {
+            dailyDataMap[dateStr] = {
+                tempMax: item.main.temp_max,
+                tempMin: item.main.temp_min,
+                desc: item.weather[0].description,
+                icon: item.weather[0].icon
+            };
+        } else {
+            dailyDataMap[dateStr].tempMax = Math.max(dailyDataMap[dateStr].tempMax, item.main.temp_max);
+            dailyDataMap[dateStr].tempMin = Math.min(dailyDataMap[dateStr].tempMin, item.main.temp_min);
+        }
+    });
+
+    const forecast3Days = Object.keys(dailyDataMap).slice(0, 3).map(dateStr => {
+        return { date: dateStr, ...dailyDataMap[dateStr] };
+    });
+
+    const forecastContainer = document.querySelector(".forecast-container");
+    forecastContainer.innerHTML = "";
+
+    forecast3Days.forEach(day => {
+        const card = document.createElement("div");
+        card.className = "forecast-card";
+        card.innerHTML = `
+            <p class="date">${day.date}</p>
+            <img src="http://openweathermap.org/img/wn/${day.icon}.png">
+            <p class="temp">${day.tempMax.toFixed(1)}°C / ${day.tempMin.toFixed(1)}°C</p>
+            <p class="desc">${day.desc}</p>
+        `;
+
+        const avgTemp = (day.tempMax + day.tempMin) / 2;
+
+        // 색상 변경 적용
+        card.style.background = getCardColorByTemp(avgTemp);
+
+        // 뜨거운 날 → 햇빛
+        if (avgTemp >= 25) {
+            const sun = document.createElement("div");
+            sun.classList.add("sunshine");
+            card.appendChild(sun);
+        }
+
+        // 추운 날 → 눈
+        if (avgTemp <= 5) {
+            for (let i = 0; i < 6; i++) {
+                const snow = document.createElement("div");
+                snow.classList.add("snowflake");
+                snow.textContent = '❄';
+                snow.style.left = (Math.random() * 80 + 10) + "%";
+                snow.style.animationDelay = (Math.random() * 2) + "s";
+                snow.style.fontSize = (12 + Math.random() * 4) + "px";
+                card.appendChild(snow);
+            }
+        }
+
+        forecastContainer.appendChild(card);
+    });
+}
+
 
 // 1초마다 시간 업데이트
 setInterval(updateCurrentTime, 1000);
