@@ -237,7 +237,7 @@ margin-bottom:20px;
     }
 
     .container {
-        width: 100%;   /* 🔥 모바일에서 가득 차도록 */
+        width: 60%;   /* 🔥 모바일에서 가득 차도록 */
         max-width: 100%;
         margin: 0 auto;
     }
@@ -248,14 +248,14 @@ margin-bottom:20px;
     }
 
     .side-box {
-        width: 100%;
+        width: 60%;
         max-width: 100%;
         margin: 0 auto;
     }
 
     .weather-box {
-        width: 90%;
-        max-width: 90%;
+        width: 40%;
+        max-width: 100%;
         margin: 0 auto;
     }
 
@@ -265,7 +265,7 @@ margin-bottom:20px;
     }
 
     .forecast-card {
-        width: 45%;  /* 2개씩 배치되도록 */
+        width: 35%;  /* 2개씩 배치되도록 */
         margin: 5px;
     }
 }
