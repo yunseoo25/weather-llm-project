@@ -255,7 +255,7 @@ margin-bottom:20px;
 
     /* 날씨 박스 */
     .weather-box {
-        width: 100%;
+        width: 90%;
         max-width: 360px;
         margin: 0 auto;
         font-size: 14px; /* 글씨 크기 축소 */
