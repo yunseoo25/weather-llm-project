@@ -228,45 +228,86 @@ margin-bottom:20px;
 
 
 /* 🌟 모바일 완전 대응 */
+
 @media (max-width: 480px) {
 
     body {
         padding: 10px;
-        flex-direction: column; /* 만약 body 레이아웃 깨질 시 */
-        align-items: stretch;
+        flex-direction: column;
+        align-items: center;
     }
 
+    /* 메인 컨테이너 전체 너비 */
     .container {
-        width: 60%;   /* 🔥 모바일에서 가득 차도록 */
-        max-width: 100%;
+        width: 90%;
+        max-width: 360px;
         margin: 0 auto;
+        padding: 18px;
+        border-radius: 16px;
     }
 
     .wrapper {
-        flex-direction: column;  /* 🔥 가로 배치 → 세로 배치 */
-        gap: 15px;
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
+        align-items: center;
     }
 
-    .side-box {
-        width: 60%;
-        max-width: 100%;
-        margin: 0 auto;
-    }
-
+    /* 날씨 박스 */
     .weather-box {
-        width: 40%;
-        max-width: 100%;
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+        font-size: 14px; /* 글씨 크기 축소 */
+        padding: 16px;
+    }
+
+    /* 사이드 박스 */
+    .side-box {
+        width: 90%;
+        max-width: 360px;
+        padding: 16px;
         margin: 0 auto;
     }
 
+    .side-box h2 {
+        font-size: 16px;
+    }
+
+    .side-box p {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    /* 입력창 크기 */
+    input {
+        width: 100%;
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    button {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    /* 예보 카드 */
     .forecast-container {
-        flex-wrap: wrap;
         justify-content: center;
+        padding: 0;
+        margin-top: 10px;
     }
 
     .forecast-card {
-        width: 35%;  /* 2개씩 배치되도록 */
+        width: 45%;          /* 기본 2개씩 배치 */
+        padding: 10px;
         margin: 5px;
+        font-size: 12px;     /* 글씨 축소 */
+    }
+
+    #currentTime {
+        font-size: 14px;
+        padding: 10px;
     }
 }
 
