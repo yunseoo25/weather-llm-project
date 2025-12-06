@@ -4,6 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 <title>Weather App</title>
 <link rel="stylesheet" href="style.css" />
 </head>
@@ -23,6 +29,8 @@
         <div class="weather-box">
             <p id="temp"></p>
             <p id="description"></p>
+            <p id="dust"></p>
+            <p id="umbrella"></p>
             <div class="forecast-container"></div>
         </div>
     </div>
@@ -37,6 +45,11 @@
 
         <h2>현재 시간</h2>
         <p id="currentTime"></p>
+
+        <h2>지도에서 위치 보기</h2>
+        <div id="map"></div>
+
+
 
 
 </div>

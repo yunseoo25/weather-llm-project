@@ -14,7 +14,7 @@ async function getWeather(city) {
         const apiKey = "f777e360e70831b017b92916f3319d13";
 
         // --- 현재 날씨 ---
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=kr&appid=${apiKey}&units=metric`;
         const response = await fetch(url);
         const data = await response.json();
 
@@ -37,6 +37,17 @@ async function getWeather(city) {
       //기온별 데이트 추천 적용
       const dateIdea=getDateIdeaByTemperature(data.main.temp);
       document.getElementById("dateIdea").textContent=dateIdea;
+
+      //지도위치가져오기
+      const lat = data.coord.lat;
+      const lon = data.coord.lon;
+        
+      //미세먼지함수호출
+      getAirQuality(lat, lon); // ⭐ 미세먼지 정보 불러오기
+      initMap(lat, lon);      // 지도 기능도 여기서 업데이트
+      getForecast(lat, lon); //강수확률 업데이트 
+
+
 
     
     } catch (error) {
@@ -133,6 +144,14 @@ async function getWeatherByCoords(lat, lon) {
 
     await renderForecast(data.name,apikey);
 
+    //지도위치가져오기
+    const lat = data.coord.lat;
+    const lon = data.coord.lon;
+    initMap(lat, lon);  //지도위치업데이트
+    getAirQuality(lat, lon); //미세먼지농도업데이트
+    getForecast(lat, lon); //강수확률업데이트
+
+
     
     // 도시 입력창에도 현재 도시 이름 넣어주면 편함
     cityInput.value = name;
@@ -143,6 +162,32 @@ async function getWeatherByCoords(lat, lon) {
 
   
 }
+//미세먼지 정보 가져오기 
+async function getAirQuality(lat, lon) {
+    const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apikey}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const aqi = data.list[0].main.aqi; // 1~5
+    const pm10 = data.list[0].components.pm10;
+    const pm25 = data.list[0].components.pm2_5;
+
+    let level = "";
+
+    switch (aqi) {
+        case 1: level = "매우 좋음 😄"; break;
+        case 2: level = "좋음 🙂"; break;
+        case 3: level = "보통 😐"; break;
+        case 4: level = "나쁨 😷"; break;
+        case 5: level = "매우 나쁨 🤢"; break;
+    }
+
+    document.getElementById("dust").innerHTML =
+        `✨ <b>AQI:</b> ${aqi} (${level})<br>
+         💨 <b>PM10:</b> ${pm10} ㎍/m³<br>
+         🌫 <b>PM2.5:</b> ${pm25} ㎍/m³`;
+}
+
 
 function getClothesRecommendation(temp) {
     if (temp <= 5) {
@@ -325,4 +370,56 @@ function updateSkyImage() {
 // 페이지 로드 시 자동 적용
 window.onload = updateSkyImage;
 
+
+let map;       // 지도 객체
+let marker;    // 핀(marker)
+
+// 지도 초기 생성 함수
+function initMap(lat, lon) {
+    if (!map) {
+        // 지도 처음 생성
+        map = L.map('map').setView([lat, lon], 11);
+
+        // 지도 타일 불러오기
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // 마커 추가
+        marker = L.marker([lat, lon]).addTo(map);
+    } else {
+        // 지도 이미 생성된 경우 → 위치만 업데이트
+        map.setView([lat, lon], 11);
+        marker.setLatLng([lat, lon]);
+    }
+}
+
+//강수확률 기반 추천 기능 
+function umbrellaRecommend(pop) {
+    let message = "";
+
+    if (pop >= 0.6) {
+        message = "🌧️ 비 올 확률이 높아요! 우산 꼭 챙기세요.";
+    } else if (pop >= 0.3) {
+        message = "☁️ 비가 올 수도 있어요. 작은 우산 하나 있으면 좋아요.";
+    } else {
+        message = "🌞 비 올 가능성은 낮아요. 우산은 필요 없어요!";
+    }
+
+    document.getElementById("umbrella").textContent = message;
+}
+
+async function getForecast(lat, lon) {
+
+    const apiKey = "f777e360e70831b017b92916f3319d13";
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const pop = data.list[0].pop; // 첫 번째 예보의 강수확률 (0~1)
+
+    umbrellaRecommend(pop); // ☔ 우산 추천 기능 실행
+
+    // 나머지 예보 카드 생성하는 기존 코드...
+}
 
