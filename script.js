@@ -294,9 +294,35 @@ async function renderForecast(city, apiKey) {
     });
 }
 
-
 // 1초마다 시간 업데이트
 setInterval(updateCurrentTime, 1000);
 
 // 페이지 열리자마자 첫 실행
 updateCurrentTime();
+
+function updateSkyImage() {
+    const hour = new Date().getHours();
+    const body = document.body;
+
+    // 기존 배경 클래스 제거
+    body.classList.remove('morning', 'noon', 'evening', 'night');
+    body.classList.add("time-bg");  // 공통 스타일 적용
+
+    if (hour >= 5 && hour < 10) {
+        body.classList.add('morning');
+    } 
+    else if (hour >= 10 && hour < 17) {
+        body.classList.add('noon');
+    } 
+    else if (hour >= 17 && hour < 20) {
+        body.classList.add('evening');
+    } 
+    else {
+        body.classList.add('night');
+    }
+}
+
+// 페이지 로드 시 자동 적용
+window.onload = updateSkyImage;
+
+

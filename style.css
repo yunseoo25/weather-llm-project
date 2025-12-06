@@ -270,4 +270,32 @@ margin-bottom:20px;
     }
 }
 
+/* 공통 스타일 */
+body.time-bg {
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    transition: background-image 1.2s ease-in-out;
+}
+
+/* 아침 이미지 */
+.morning {
+    background-image: url('img/morning.jpg') !important;
+}
+
+/* 점심 이미지 */
+.noon {
+    background-image: url('img/cloud.jpg') !important;
+}
+
+/* 저녁 이미지 */
+.evening {
+    background-image: url('img/sunset.jpg') !important;
+}
+
+/* 밤 이미지 */
+.night {
+    background-image: url('img/night.jpg') !important;
+}
+
 
